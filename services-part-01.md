@@ -2,7 +2,7 @@
 
 ### Verificando o cluster
 
-1. Iniciando a aula e vendo que nosso cluster esta funcionando legal:
+a) Iniciando a aula e vendo que nosso cluster esta funcionando legal:
 
 ```bash
 # kubectl get nodes
@@ -11,14 +11,14 @@ kube-worker01           Ready    <none>                 9h     v1.23.1
 kube-worker2            Ready    <none>                 114s   v1.23.1
 localhost.localdomain   Ready    control-plane,master   10h    v1.23.1
 ```
-a) Vamos ver se temos o *deployment*:
+b) Vamos ver se temos o *deployment*:
 
 ```bash
 # kubectl get deployments
 No resources found in default namespace.
 ```
 
-b) Agora analisando se temos *services* 
+c) Agora analisando se temos *services* 
 
 ```bash
 # kubectl get services
@@ -26,4 +26,4 @@ NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   7d9h
 ```
 
-c) sasasas
+d) sasasas
