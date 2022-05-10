@@ -26,4 +26,51 @@ NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   7d9h
 ```
 
-d) sasasas
+d) Analisando se temos *replica-set*:
+
+```bash
+# kubectl get replicasets
+No resources found in default namespace.
+```
+
+2.  Uma coisa importante que precisamos saber, quando eu criei meu service veja ele veio com o *type* setado como *ClusterIP*.
+
+```bash
+# kubectl get services
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE  
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP   7d13h
+nginx        ClusterIP   10.109.244.99   <none>        80/TCP    22m
+```
+
+- ou seja, nao preciso passar a porta *80* para ele porque ele sabe que tem acesso dentro do cluster.
+
+Se eu der um comando *curl*:
+
+```html
+# curl 10.109.244.99 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+
