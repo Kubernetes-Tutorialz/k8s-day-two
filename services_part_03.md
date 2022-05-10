@@ -15,3 +15,11 @@
 # kubectl create deployment nginx --image=nginx
 deployment.apps/nginx create
 ```
+
+    2.  Descrevendo nosso `deployment`:
+
+```bash
+# kubectl get deployments.apps 
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   1/1     1            1           7s
+```
