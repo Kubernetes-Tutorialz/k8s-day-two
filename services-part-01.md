@@ -73,4 +73,47 @@ Commercial support is available at
 </html>
 ```
 
+3.  Vamos agora criar um *service*:
 
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: default
+spec:
+  clusterIP: 10.109.244.99
+  clusterIPs:
+  - 10.109.244.99
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+  sessionAffinity: None
+  type: ClusterIP
+```
+
+- veja que eu fiz a retirada de alguns itens que sao inuteis.
+- feito isso podemos testar.
+
+```bash
+# kubectl apply -f meu_primeiro_service-v2.yml 
+service/nginx created
+```
+
+e agora podemos ver que ele esta criado:
+
+```bash
+# kubectl get svc
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE  
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP   7d14h
+nginx        ClusterIP   10.109.244.96   <none>        80/TCP    10s
+```
