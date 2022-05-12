@@ -144,4 +144,109 @@ replicaset.apps/grafana-5c447577c9   1         1         1       6m41s
 
 ### Trabalhando com contexto no Kubernetes 
 
-1.  
+1.  Primeiro de tudo preciso ver como estao as informacoes do cluster:
+
+`# kubectl config view`
+
+```bash
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://191.168.0.111:6241
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: REDACTED
+    client-key-data: REDACTED
+```
+
+2.  Agora vamos criar nosso contexto no Kubernetes:
+
+```bash
+# kubectl config set-context monitor --namespace=monitoring --user=kubernetes-admin --cluster=kubernetes
+Context "monitor" created.
+```
+
+3.  Criando o outro contexto:
+
+```bash
+# kubectl config set-context observa --namespace=monitoring-prod --user=kubernetes-admin --cluster=kubernetes
+Context "observa" created.
+```
+
+4.  Vamos conferir se esta correto nosso contexto:
+
+`# kubectl config view`
+
+```bash
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://191.168.0.111:6443      
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+- context:
+    cluster: kubernetes
+    namespace: monitoring
+    user: kubernetes-admin
+  name: monitor
+- context:
+    cluster: kubernetes
+    namespace: monitoring-prod
+    user: kubernetes-admin
+  name: observa
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: REDACTED
+    client-key-data: REDACTED
+```
+
+5.  Vamos alternar para o contexto `monitor`:
+
+```bash
+# kubectl config use-context monitor 
+Switched to context "monitor".
+```
+
+6.  Para saber se estamos nesse contexto:
+
+```bash
+# kubectl config current-context 
+monitor
+```
+
+7.  Veja que eu estou no ambiente correto:
+
+```bash
+# kubectl get all
+NAME                           READY   STATUS    RESTARTS   AGE
+pod/grafana-5c447577c9-pcpts   1/1     Running   0          78m
+
+NAME              TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/grafana   NodePort   10.104.31.49   <none>        3000:30059/TCP   77m
+
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/grafana   1/1     1            1           78m
+
+NAME                                 DESIRED   CURRENT   READY   AGE
+replicaset.apps/grafana-5c447577c9   1         1         1       78m
+```
