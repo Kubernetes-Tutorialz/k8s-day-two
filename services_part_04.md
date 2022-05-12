@@ -3,6 +3,7 @@
 ## Retomando nossos testes com o services
 
 - Vamos criar export nosso service com usando o *type* para `LoadBalancer`:
+  - ele cria um NodePort e um ClusterIP.
 
 ```bash
 # kubectl expose deployment nginx --type=LoadBalancer --port=80
@@ -115,7 +116,7 @@ Subsets:
 Events:  <none>
 ```
 
--   Verificado:
+-   Verificando:
 
 ```bash
 # kubectl get endpoints nginx 
